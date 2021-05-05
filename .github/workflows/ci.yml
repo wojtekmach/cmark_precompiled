@@ -1,0 +1,76 @@
+name: Binaries
+on:
+  push:
+    branches:
+      - main
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: '21.3'
+          elixir-version: '1.11.4'
+      - run: mix deps.get
+      - run: mix test
+      - run: git pull origin main
+      - name: Update binaries
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update binaries (linux)
+          file_pattern: priv/*
+  macos:
+    runs-on: macos-10.15
+    steps:
+      - uses: actions/checkout@v2
+      # https://stackoverflow.com/a/65056232
+      - name: Update Homebrew
+        run: |
+          brew update --preinstall
+          cat "$(brew --repository)/Library/Taps/homebrew/homebrew-core/Formula/elixir.rb" > .github/brew-formulae
+      - name: Configure Homebrew cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/Library/Caches/Homebrew/elixir--*
+            ~/Library/Caches/Homebrew/downloads/*--elixir-*
+          key: brew-${{ hashFiles('.github/brew-formulae') }}
+          restore-keys: brew-
+      - run: HOMEBREW_NO_AUTO_UPDATE=1 brew install elixir
+      - run: mix local.hex --force
+      - run: mix deps.get
+      - run: mix test
+      - run: git pull origin main
+      - name: Update binaries
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update binaries (macos)
+          file_pattern: priv/*
+  windows:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ilammy/msvc-dev-cmd@v1
+      - uses: actions/cache@v2
+        with:
+          path: C:\Users\runneradmin\AppData\Local\Temp\chocolatey\erlang
+          key: erlang-22.3-windows-2019
+      - uses: actions/cache@v2
+        with:
+          path: C:\Users\runneradmin\AppData\Local\Temp\chocolatey\elixir
+          key: elixir-1.11.2-windows-2019
+      - name: Install Elixir
+        run: choco install -y elixir --version 1.11.2
+      - run: c:\ProgramData\chocolatey\lib\Elixir\bin\mix local.hex --force
+        shell: cmd
+      - run: c:\ProgramData\chocolatey\lib\Elixir\bin\mix deps.get
+        shell: cmd
+      - run: c:\ProgramData\chocolatey\lib\Elixir\bin\mix test
+        shell: cmd
+      - run: git pull origin main
+      - name: Update binaries
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update binaries (windows)
+          file_pattern: priv/*
