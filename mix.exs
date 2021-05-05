@@ -7,20 +7,30 @@ defmodule CmarkPrecompiled.MixProject do
       version: "0.1.0",
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
+      deps: deps(),
       aliases: aliases(),
-      deps: deps()
+      docs: docs()
     ]
   end
 
   defp deps do
     [
-      {:cmark, "~> 0.10.0", only: [:dev, :test]}
+      {:cmark, "~> 0.10.0", only: [:dev, :test, :docs]},
+      {:ex_doc, ">= 0.0.0", only: :docs}
     ]
   end
 
   defp aliases() do
     [
       test: ["deps.loadpaths", &copy_binary/1, "test"]
+    ]
+  end
+
+  defp docs() do
+    [
+      main: "Cmark",
+      source_url: "https://github.com/wojtekmach/cmark_precompiled",
+      source_ref: "main"
     ]
   end
 

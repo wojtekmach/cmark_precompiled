@@ -1,4 +1,11 @@
 defmodule Cmark do
+  @external_resource "README.md"
+
+  @moduledoc "README.md"
+             |> File.read!()
+             |> String.split("<!-- MDOC !-->")
+             |> Enum.fetch!(1)
+
   @html_id 1
 
   @doc ~S"""

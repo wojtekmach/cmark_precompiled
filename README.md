@@ -1,5 +1,7 @@
 # CmarkPrecompiled
 
+<!-- MDOC !-->
+
 A drop-in replacement for [cmark.ex](https://github.com/asaaki/cmark.ex) that ships with
 pre-compiled binaries.
 
@@ -10,6 +12,8 @@ iex> Mix.install([{:cmark_precompiled, github: "wojtekmach/cmark_precompiled"}])
 iex> Cmark.to_html("*Hello*")
 "<p><em>Hello</em></p>\n"
 ```
+
+<!-- MDOC !-->
 
 ## License
 
