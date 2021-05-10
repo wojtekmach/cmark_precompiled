@@ -44,10 +44,8 @@ defmodule Cmark.Nif do
   @moduledoc false
   @on_load :init
 
-  @target CmarkPrecompiled.MixProject.target()
-
   def init do
-    path = :code.priv_dir(:cmark_precompiled) ++ '/cmark-#{@target}'
+    path = :code.priv_dir(:cmark_precompiled) ++ '/cmark'
     :ok = :erlang.load_nif(path, 0)
   end
 

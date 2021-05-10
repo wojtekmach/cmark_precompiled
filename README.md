@@ -2,10 +2,11 @@
 
 <!-- MDOC !-->
 
-A drop-in replacement for [cmark.ex](https://github.com/asaaki/cmark.ex) that ships with
-pre-compiled binaries.
+A drop-in replacement for [cmark.ex](https://github.com/asaaki/cmark.ex) that uses pre-compiled binaries.
 
 ## Usage
+
+(Optionally, run inside a Docker container: `$ docker run --rm -it elixir:1.12 iex`)
 
 ```elixir
 iex> Mix.install([{:cmark_precompiled, github: "wojtekmach/cmark_precompiled"}])
@@ -14,6 +15,16 @@ iex> Cmark.to_html("*Hello*")
 ```
 
 <!-- MDOC !-->
+
+## How does it work?
+
+This projects works in two modes: in development and as a dependency.
+
+In development, `:dev` and `:test` Mix environments, we depend on and compile the `cmark.ex` library and we copy its `cmark.so`. On CI, we upload `cmark.so` to a GitHub release, per supported OS.
+
+When used as a dependency, `:prod` Mix environment, when compiling the project, we download the OS-specific shared library from the GitHub release.
+
+Currently, every commit to the main branch re-creates the GitHub release.
 
 ## License
 

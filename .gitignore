@@ -20,7 +20,10 @@ erl_crash.dump
 *.ez
 
 # Ignore package tarball (built via "mix hex.build").
-cmark_binary-*.tar
+cmark_precompiled-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+/priv
+/cmark-*
