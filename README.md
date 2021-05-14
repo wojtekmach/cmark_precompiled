@@ -24,8 +24,6 @@ In development, `:dev` and `:test` Mix environments, we depend on and compile th
 
 When used as a dependency, `:prod` Mix environment, when compiling the project, we download the OS-specific shared library from the GitHub release.
 
-Currently, every commit to the main branch re-creates the GitHub release.
-
 ## License
 
 Copyright (c) 2021 Wojtek Mach
